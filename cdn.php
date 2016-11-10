@@ -1,66 +1,73 @@
 <?php
 /*
     Plugin Name:谷歌服务与Gravatar头像加速
-    Description:本插件可针对面对Google前端库、Google字体库和Gravatar头像进行替换加速，CDN为360与多说加速器。
+    Description:本插件可针对面对Google前端库、Google字体库和Gravatar头像进行替换加速，CDN为科大镜像与多说加速器。
     Version: 1.0
     Author: JaQuan
     Author URI: https://github.com/springjk
 */
 
 /**
- * Use Qihoo 360 Open Ajax Libs Service to replace Google's.
+ * Replace Google Ajax Libs Service.
  *
- * @param String $text
- * @return String
+ * @param string $text
+ *
+ * @return string
  */
-function cdn_google_ajax_libs($text)
+function cdn_google_ajax_libs ($text)
 {
-    $pos = strpos($text, 'googleapis.com');
-
-    if ($pos !== false) {
-        return '';
-    }
-
-    return $text;
-  // return str_replace('//ajax.googleapis.com/', '//ajax.useso.com/', $text);
+    return str_replace('ajax.googleapis.com', 'ajax.lug.ustc.edu.cn', $text);
 }
 
 /**
- * Use Qihoo 360 Open Fonts Service to replace Google's.
+ * Replace Google Theme Service.
  *
- * @param String $text
- * @return String
+ * @param string $text
+ *
+ * @return string
  */
-function cdn_google_fonts($text)
+function cdn_google_theme ($text)
 {
- if ($pos !== false) {
-     return '';
- }
-
- return $text;
-  // return str_replace('https://fonts.googleapis.com/', 'http://fonts.useso.com/', $text);
+    return str_replace('themes.googleusercontent.com', 'google-themes.lug.ustc.edu.cn', $text);
 }
 
 /**
- * Use DuoShuo Open Gravatar Service to replace Gravatar's.
+ * Replace Google Open Fonts Service
  *
- * @param String $text
- * @return String
+ * @param string $text
+ *
+ * @return string
  */
-function cdn_avatar($avatar)
+function cdn_google_fonts ($text)
 {
-    $official = array(
+    $text = str_replace('fonts.googleapis.com', 'fonts.lug.ustc.edu.cn', $text);
+
+    return str_replace('fonts.gstatic.com', 'fonts-gstatic.lug.ustc.edu.cn', $text);
+}
+
+/**
+ * Replace Gravatar Service
+ *
+ * @param array $avatar
+ *
+ * @return string
+ */
+function cdn_avatar ($avatar)
+{
+    $official = [
         '0.gravatar.com',
         '1.gravatar.com',
         '2.gravatar.com',
         'www.gravatar.com',
         'secure.gravatar.com'
-    );
+    ];
 
-  return str_replace($official, 'gravatar.duoshuo.com', $avatar);
+    return str_replace($official, 'gravatar.duoshuo.com', $avatar);
 }
 
 add_filter('style_loader_tag', 'cdn_google_ajax_libs');
+
+add_filter('style_loader_tag', 'cdn_google_theme');
 
 add_filter('style_loader_tag', 'cdn_google_fonts');
 
